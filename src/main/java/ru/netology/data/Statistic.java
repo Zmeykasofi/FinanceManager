@@ -82,7 +82,7 @@ public class Statistic {
 
     public String getServerResponse() {
         Category response = getMaxCategory();
-        return "  \"maxCategory\": {" +
+        return "\"maxCategory\": {" +
                 "    \"category\": \"" + response.getCategoryName() + "\"," +
                 "    \"sum\": \"" + response.getSum() + "\"" +
                 "  }";
