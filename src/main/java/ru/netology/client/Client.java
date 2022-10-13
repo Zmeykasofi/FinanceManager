@@ -47,7 +47,7 @@ public class Client {
         }
     }
 
-    private static String getCurrentDate() {
+    public static String getCurrentDate() {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy.MM.dd");
         LocalDateTime now = LocalDateTime.now();
         return dtf.format(now);
