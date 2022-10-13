@@ -1,13 +1,14 @@
 package ru.netology.data;
 
+import com.google.gson.Gson;
 import ru.netology.client.Request;
 
-import java.io.File;
+import java.io.*;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.TreeMap;
 
-public class Statistic {
+public class Statistic implements Serializable {
 
     private final Map<String, Category> itemsByCategory = new TreeMap<>();
 
@@ -20,8 +21,6 @@ public class Statistic {
     private void loadCategoriesFromTSV() {
         try {
             File tsvFile = new File("categories.tsv");
-
-            System.out.println("Список товаров по категориям загружен из файла.");
 
             Scanner reader = new Scanner(tsvFile);
             while (reader.hasNextLine()) {
@@ -41,6 +40,7 @@ public class Statistic {
                 itemsByCategory.put(categoryName, currentCategory);
             }
             reader.close();
+            System.out.println("Список товаров по категориям загружен из файла.");
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -86,5 +86,18 @@ public class Statistic {
                 "    \"category\": \"" + response.getCategoryName() + "\"," +
                 "    \"sum\": \"" + response.getSum() + "\"" +
                 "  }";
+    }
+
+    public void saveBin() throws Exception {
+        try (FileWriter fileWriter = new FileWriter("data.bin")) {
+            Gson gson = new Gson();
+            gson.toJson(this, fileWriter);
+        }
+    }
+    public static Statistic loadFromBinFile() throws Exception {
+        try (FileReader fileReader = new FileReader("data.bin")) {
+            Gson gson = new Gson();
+            return gson.fromJson(fileReader, Statistic.class);
+        }
     }
 }
